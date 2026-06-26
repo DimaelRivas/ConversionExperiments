@@ -1,0 +1,127 @@
+profiles:
+  standard_fast_no_ocr:
+    description: "Fast baseline using native PDF text, no OCR, fast table mode."
+    pipeline: standard
+    device: auto
+    do_ocr: false
+    force_full_page_ocr: false
+    do_table_structure: true
+    table_mode: fast
+    do_cell_matching: true
+    generate_page_images: false
+    generate_picture_images: false
+    images_scale: 1.0
+    gpu_required: false
+
+  standard_accurate_no_ocr:
+    description: "Accurate table structure using native PDF text, no OCR."
+    pipeline: standard
+    device: auto
+    do_ocr: false
+    force_full_page_ocr: false
+    do_table_structure: true
+    table_mode: accurate
+    do_cell_matching: true
+    generate_page_images: true
+    generate_picture_images: true
+    images_scale: 2.0
+    gpu_required: false
+
+  standard_accurate_cellmatch_false:
+    description: "Accurate table extraction with cell matching disabled to test merged-column issues."
+    pipeline: standard
+    device: auto
+    do_ocr: false
+    force_full_page_ocr: false
+    do_table_structure: true
+    table_mode: accurate
+    do_cell_matching: false
+    generate_page_images: true
+    generate_picture_images: true
+    images_scale: 2.0
+    gpu_required: false
+
+  standard_tesseract_ocr_psm3:
+    description: "Standard pipeline with Tesseract OCR, PSM 3."
+    pipeline: standard
+    device: auto
+    ocr_engine: tesseract
+    ocr_lang:
+      - spa
+      - eng
+    psm: 3
+    do_ocr: true
+    force_full_page_ocr: false
+    do_table_structure: true
+    table_mode: accurate
+    do_cell_matching: true
+    generate_page_images: true
+    generate_picture_images: true
+    images_scale: 2.0
+    gpu_required: false
+
+  standard_tesseract_force_ocr_psm6:
+    description: "Force full-page Tesseract OCR, PSM 6, for bad embedded text layers."
+    pipeline: standard
+    device: auto
+    ocr_engine: tesseract
+    ocr_lang:
+      - spa
+      - eng
+    psm: 6
+    do_ocr: true
+    force_full_page_ocr: true
+    do_table_structure: true
+    table_mode: accurate
+    do_cell_matching: true
+    generate_page_images: true
+    generate_picture_images: true
+    images_scale: 2.0
+    gpu_required: false
+
+  standard_easyocr_force_ocr:
+    description: "Force OCR with EasyOCR for image-heavy PDFs."
+    pipeline: standard
+    device: auto
+    ocr_engine: easyocr
+    ocr_lang:
+      - es
+      - en
+    do_ocr: true
+    force_full_page_ocr: true
+    do_table_structure: true
+    table_mode: accurate
+    do_cell_matching: true
+    generate_page_images: true
+    generate_picture_images: true
+    images_scale: 2.0
+    gpu_required: false
+
+  standard_cuda_accurate:
+    description: "Standard pipeline using CUDA acceleration where available."
+    pipeline: standard
+    device: cuda
+    do_ocr: true
+    force_full_page_ocr: false
+    do_table_structure: true
+    table_mode: accurate
+    do_cell_matching: true
+    generate_page_images: true
+    generate_picture_images: true
+    images_scale: 2.0
+    gpu_required: true
+
+  vlm_granite_docling_cuda:
+    description: "VLM pipeline with Granite Docling. GPU-required/practical-only profile."
+    pipeline: vlm
+    vlm_model: granite_docling
+    device: cuda
+    do_ocr: false
+    force_full_page_ocr: false
+    do_table_structure: true
+    table_mode: accurate
+    do_cell_matching: true
+    generate_page_images: true
+    generate_picture_images: true
+    images_scale: 2.0
+    gpu_required: true

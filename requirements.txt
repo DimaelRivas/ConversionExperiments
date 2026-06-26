@@ -1,0 +1,10 @@
+docling
+pandas
+pyyaml
+tqdm
+tabulate
+openpyxl
+psutil
+nvidia-ml-py
+easyocr
+pytesseract
