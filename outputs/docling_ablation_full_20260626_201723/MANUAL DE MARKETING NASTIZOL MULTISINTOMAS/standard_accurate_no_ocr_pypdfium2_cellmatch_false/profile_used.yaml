@@ -1,0 +1,21 @@
+description: Native-text accurate TableFormer using pypdfium2 backend with cell matching
+  disabled.
+group: native_text
+quality_tier: strong
+gpu_required: false
+gpu_preferred: false
+resource_class: high
+pipeline: standard
+device: auto
+do_ocr: false
+force_full_page_ocr: false
+do_table_structure: true
+table_mode: accurate
+generate_page_images: true
+generate_picture_images: true
+images_scale: 2.0
+group_aliases:
+- backend
+pdf_backend: pypdfium2
+do_cell_matching: false
+selected_device: auto

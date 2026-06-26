@@ -1,0 +1,93 @@
+# Inspection: standard_rapidocr_torch_cuda_force_ocr
+
+- Status: failure
+- Runtime seconds: 0.103
+- Profile group: ocr
+- Quality tier: heavy
+- Resource class: high
+- Pipeline: standard
+- Device requested: cuda
+- Device selected: cuda
+- Tables: 0
+
+## Table CSV files
+- None
+
+## Top table shapes
+- None
+
+## First 20 Markdown Lines
+
+```markdown
+```
+
+## Errors Or Skips
+- Error: Unsupported configuration: torch.PP-OCRv6.det.small
+
+```text
+Traceback (most recent call last):
+  File "/content/ConversionExperiments/scripts/run_docling_ablation.py", line 1079, in run_one
+    result, convert_warnings = convert_pdf(converter, pdf_path, args.max_pages)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/ConversionExperiments/scripts/run_docling_ablation.py", line 801, in convert_pdf
+    return converter.convert(pdf_path), warnings
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/pydantic/_internal/_validate_call.py", line 39, in wrapper_function
+    return wrapper(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/pydantic/_internal/_validate_call.py", line 136, in __call__
+    res = self.__pydantic_validator__.validate_python(pydantic_core.ArgsKwargs(args, kwargs))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/docling/document_converter.py", line 463, in convert
+    return next(all_res)
+           ^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/docling/document_converter.py", line 522, in convert_all
+    for conv_res in conv_res_iter:
+                    ^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/docling/document_converter.py", line 647, in _convert
+    for item in map(
+                ^^^^
+  File "/usr/local/lib/python3.12/dist-packages/docling/document_converter.py", line 694, in _process_document
+    conv_res = self._execute_pipeline(in_doc, raises_on_error=raises_on_error)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/docling/document_converter.py", line 713, in _execute_pipeline
+    pipeline = self._get_pipeline(in_doc.format)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/docling/document_converter.py", line 677, in _get_pipeline
+    self.initialized_pipelines[cache_key] = pipeline_class(
+                                            ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/docling/pipeline/standard_pdf_pipeline.py", line 577, in __init__
+    self._init_models()
+  File "/usr/local/lib/python3.12/dist-packages/docling/pipeline/standard_pdf_pipeline.py", line 595, in _init_models
+    self.ocr_model = self._make_ocr_model(art_path)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/docling/pipeline/standard_pdf_pipeline.py", line 659, in _make_ocr_model
+    return factory.create_instance(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/docling/models/factories/base_factory.py", line 57, in create_instance
+    return _cls(options=options, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/docling/models/stages/ocr/rapid_ocr_model.py", line 435, in __init__
+    self.reader = RapidOCR(
+                  ^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/rapidocr/main.py", line 46, in __init__
+    self._initialize(cfg)
+  File "/usr/local/lib/python3.12/dist-packages/rapidocr/main.py", line 71, in _initialize
+    self.text_det = TextDetector(cfg.Det)
+                    ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/rapidocr/ch_ppocr_det/main.py", line 47, in __init__
+    self.session = get_engine(cfg.engine_type)(cfg)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/rapidocr/inference_engine/pytorch/main.py", line 22, in __init__
+    self.predictor = ModelLoader(cfg, self.device).predictor
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/rapidocr/inference_engine/pytorch/networks/main.py", line 20, in __init__
+    model_path = self._init_model_path(cfg)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/rapidocr/inference_engine/pytorch/networks/main.py", line 30, in _init_model_path
+    model_info = InferSession.get_model_url(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/rapidocr/inference_engine/base.py", line 129, in get_model_url
+    raise ValueError(
+ValueError: Unsupported configuration: torch.PP-OCRv6.det.small
+```

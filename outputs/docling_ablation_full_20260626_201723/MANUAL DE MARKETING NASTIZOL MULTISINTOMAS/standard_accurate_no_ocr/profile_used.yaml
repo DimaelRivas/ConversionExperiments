@@ -1,0 +1,17 @@
+description: Backward-compatible accurate native-text profile with cell matching enabled.
+group: native_text
+quality_tier: strong
+gpu_required: false
+gpu_preferred: false
+resource_class: high
+pipeline: standard
+device: auto
+do_ocr: false
+force_full_page_ocr: false
+do_table_structure: true
+table_mode: accurate
+generate_page_images: true
+generate_picture_images: true
+images_scale: 2.0
+do_cell_matching: true
+selected_device: auto

@@ -1,0 +1,41 @@
+{
+  "table_count": 6,
+  "tables_with_rows": 6,
+  "total_rows": 53,
+  "total_columns_sum": 34,
+  "max_columns": 9,
+  "max_rows": 22,
+  "empty_cell_ratio": 0.065,
+  "single_column_table_count": 1,
+  "very_small_table_count": 0,
+  "csv_files_count": 6,
+  "html_files_count": 6,
+  "markdown_table_pipe_count": 53,
+  "json_table_item_count": 6,
+  "table_shapes": [
+    {
+      "rows": 22,
+      "columns": 1
+    },
+    {
+      "rows": 5,
+      "columns": 4
+    },
+    {
+      "rows": 8,
+      "columns": 9
+    },
+    {
+      "rows": 9,
+      "columns": 9
+    },
+    {
+      "rows": 3,
+      "columns": 5
+    },
+    {
+      "rows": 6,
+      "columns": 6
+    }
+  ]
+}

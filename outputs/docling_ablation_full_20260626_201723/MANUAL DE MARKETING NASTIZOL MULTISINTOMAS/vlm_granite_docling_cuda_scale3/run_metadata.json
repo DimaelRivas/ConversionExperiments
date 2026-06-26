@@ -1,0 +1,128 @@
+{
+  "pdf_path": "/content/ConversionExperiments/data/MANUAL DE MARKETING NASTIZOL MULTISINTOMAS.pdf",
+  "pdf_filename": "MANUAL DE MARKETING NASTIZOL MULTISINTOMAS.pdf",
+  "profile_name": "vlm_granite_docling_cuda_scale3",
+  "profile_description": "VLM pipeline with Granite Docling on CUDA at image scale 3.0.",
+  "profile_group": "vlm",
+  "quality_tier": "extreme",
+  "resource_class": "extreme",
+  "pdf_backend": null,
+  "table_mode": "accurate",
+  "do_cell_matching": true,
+  "ocr_engine": null,
+  "ocr_lang": null,
+  "psm": null,
+  "do_ocr": false,
+  "force_full_page_ocr": false,
+  "pipeline": "vlm",
+  "vlm_model": "granite_docling",
+  "images_scale": 3.0,
+  "generate_page_images": true,
+  "generate_picture_images": true,
+  "device_requested": "cuda",
+  "device_selected": "cuda",
+  "gpu_available": true,
+  "gpu_name": "Tesla T4",
+  "gpu_memory_total_mb": 15360,
+  "gpu_memory_before_mb": 552,
+  "gpu_memory_after_mb": 9996,
+  "runtime_seconds": 855.372,
+  "status": "success",
+  "skip_reason": null,
+  "error_message": null,
+  "docling_version": "2.107.0",
+  "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+  "platform": "Linux-6.6.122+-x86_64-with-glibc2.35",
+  "start_timestamp": "2026-06-26T20:49:02.961434+00:00",
+  "end_timestamp": "2026-06-26T21:03:18.353317+00:00",
+  "page_count": 18,
+  "number_of_tables_extracted": 8,
+  "table_metrics": {
+    "table_count": 8,
+    "tables_with_rows": 8,
+    "total_rows": 34,
+    "total_columns_sum": 27,
+    "max_columns": 7,
+    "max_rows": 9,
+    "empty_cell_ratio": 0.0,
+    "single_column_table_count": 3,
+    "very_small_table_count": 3,
+    "csv_files_count": 8,
+    "html_files_count": 8,
+    "markdown_table_pipe_count": 31,
+    "json_table_item_count": 8,
+    "table_shapes": [
+      {
+        "rows": 1,
+        "columns": 0
+      },
+      {
+        "rows": 5,
+        "columns": 3
+      },
+      {
+        "rows": 8,
+        "columns": 7
+      },
+      {
+        "rows": 9,
+        "columns": 7
+      },
+      {
+        "rows": 3,
+        "columns": 5
+      },
+      {
+        "rows": 1,
+        "columns": 0
+      },
+      {
+        "rows": 1,
+        "columns": 0
+      },
+      {
+        "rows": 6,
+        "columns": 5
+      }
+    ]
+  },
+  "warnings": [
+    "do_table_structure_unsupported_by_docling_api",
+    "page_batch_size_unsupported_by_docling_api",
+    "layout_batch_size_unsupported_by_docling_api",
+    "table_structure_options_unavailable"
+  ],
+  "output_file_paths": {
+    "markdown": "/content/ConversionExperiments/outputs/docling_ablation_full_20260626_201723/MANUAL DE MARKETING NASTIZOL MULTISINTOMAS/vlm_granite_docling_cuda_scale3/output.md",
+    "json": "/content/ConversionExperiments/outputs/docling_ablation_full_20260626_201723/MANUAL DE MARKETING NASTIZOL MULTISINTOMAS/vlm_granite_docling_cuda_scale3/output.json",
+    "profile_used": "/content/ConversionExperiments/outputs/docling_ablation_full_20260626_201723/MANUAL DE MARKETING NASTIZOL MULTISINTOMAS/vlm_granite_docling_cuda_scale3/profile_used.yaml",
+    "metadata": "/content/ConversionExperiments/outputs/docling_ablation_full_20260626_201723/MANUAL DE MARKETING NASTIZOL MULTISINTOMAS/vlm_granite_docling_cuda_scale3/run_metadata.json",
+    "table_metrics": "/content/ConversionExperiments/outputs/docling_ablation_full_20260626_201723/MANUAL DE MARKETING NASTIZOL MULTISINTOMAS/vlm_granite_docling_cuda_scale3/table_metrics.json",
+    "inspection": "/content/ConversionExperiments/outputs/docling_ablation_full_20260626_201723/MANUAL DE MARKETING NASTIZOL MULTISINTOMAS/vlm_granite_docling_cuda_scale3/inspection.md",
+    "tables_dir": "/content/ConversionExperiments/outputs/docling_ablation_full_20260626_201723/MANUAL DE MARKETING NASTIZOL MULTISINTOMAS/vlm_granite_docling_cuda_scale3/tables",
+    "images_dir": "/content/ConversionExperiments/outputs/docling_ablation_full_20260626_201723/MANUAL DE MARKETING NASTIZOL MULTISINTOMAS/vlm_granite_docling_cuda_scale3/images",
+    "images_saved": 66
+  },
+  "gpu_memory_before": {
+    "available": true,
+    "name": "Tesla T4",
+    "memory_total_mb": 15360,
+    "memory_used_mb": 552,
+    "sources": [
+      "nvidia-smi",
+      "pynvml",
+      "torch"
+    ]
+  },
+  "gpu_memory_after": {
+    "available": true,
+    "name": "Tesla T4",
+    "memory_total_mb": 15360,
+    "memory_used_mb": 9996,
+    "sources": [
+      "nvidia-smi",
+      "pynvml",
+      "torch"
+    ]
+  }
+}

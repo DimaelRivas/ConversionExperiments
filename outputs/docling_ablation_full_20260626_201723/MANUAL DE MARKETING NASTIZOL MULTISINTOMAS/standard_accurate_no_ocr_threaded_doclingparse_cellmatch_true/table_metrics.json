@@ -1,0 +1,16 @@
+{
+  "table_count": 0,
+  "tables_with_rows": 0,
+  "total_rows": 0,
+  "total_columns_sum": 0,
+  "max_columns": 0,
+  "max_rows": 0,
+  "empty_cell_ratio": 0.0,
+  "single_column_table_count": 0,
+  "very_small_table_count": 0,
+  "csv_files_count": 0,
+  "html_files_count": 0,
+  "markdown_table_pipe_count": 0,
+  "json_table_item_count": 0,
+  "table_shapes": []
+}

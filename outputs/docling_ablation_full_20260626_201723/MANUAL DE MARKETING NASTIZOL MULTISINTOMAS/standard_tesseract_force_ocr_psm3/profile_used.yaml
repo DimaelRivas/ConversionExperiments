@@ -1,0 +1,22 @@
+description: Forced full-page Tesseract OCR, PSM 3.
+group: ocr
+quality_tier: heavy
+gpu_required: false
+gpu_preferred: false
+resource_class: high
+pipeline: standard
+device: auto
+ocr_engine: tesseract
+ocr_lang:
+- spa
+- eng
+do_ocr: true
+force_full_page_ocr: true
+do_table_structure: true
+table_mode: accurate
+do_cell_matching: true
+generate_page_images: true
+generate_picture_images: true
+images_scale: 2.0
+psm: 3
+selected_device: auto
