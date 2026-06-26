@@ -1,0 +1,14 @@
+description: Accurate table extraction with cell matching disabled to test merged-column
+  issues.
+pipeline: standard
+device: auto
+do_ocr: false
+force_full_page_ocr: false
+do_table_structure: true
+table_mode: accurate
+do_cell_matching: false
+generate_page_images: true
+generate_picture_images: true
+images_scale: 2.0
+gpu_required: false
+selected_device: auto

@@ -1,0 +1,18 @@
+description: Standard pipeline with Tesseract OCR, PSM 3.
+pipeline: standard
+device: auto
+ocr_engine: tesseract
+ocr_lang:
+- spa
+- eng
+psm: 3
+do_ocr: true
+force_full_page_ocr: false
+do_table_structure: true
+table_mode: accurate
+do_cell_matching: true
+generate_page_images: true
+generate_picture_images: true
+images_scale: 2.0
+gpu_required: false
+selected_device: auto

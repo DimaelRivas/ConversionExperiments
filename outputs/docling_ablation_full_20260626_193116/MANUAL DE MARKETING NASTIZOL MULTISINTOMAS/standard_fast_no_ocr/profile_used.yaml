@@ -1,0 +1,13 @@
+description: Fast baseline using native PDF text, no OCR, fast table mode.
+pipeline: standard
+device: auto
+do_ocr: false
+force_full_page_ocr: false
+do_table_structure: true
+table_mode: fast
+do_cell_matching: true
+generate_page_images: false
+generate_picture_images: false
+images_scale: 1.0
+gpu_required: false
+selected_device: auto
