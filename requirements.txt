@@ -8,3 +8,9 @@ psutil
 nvidia-ml-py
 easyocr
 pytesseract
+rapidocr
+onnxruntime
+transformers
+accelerate
+sentencepiece
+protobuf

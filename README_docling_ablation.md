@@ -1,8 +1,10 @@
-# Docling PDF Ablation Framework
+# Docling PDF Table Ablation Suite
 
-This project runs the same PDF set through multiple Docling extraction profiles and writes comparable Markdown, JSON, tables, images, metadata, and summary reports.
+This repository runs the same PDF or PDF folder through multiple Docling conversion profiles and writes comparable Markdown, JSON, table CSV/HTML files, images, metadata, inspections, and summary reports. The current suite is tuned for maximum table extraction quality, not minimum runtime.
 
-## Install Locally
+The newer profiles are intentionally heavier. They vary TableFormer mode, cell matching, OCR strategy, OCR engine, Tesseract PSM, PDF backend, device, VLM pipeline, image scale, and batch/performance options. CPU-only development remains supported, while CUDA and VLM profiles are gated behind `--allow-gpu` for remote NVIDIA runs.
+
+## Install
 
 ```bash
 python -m venv .venv
@@ -10,134 +12,158 @@ source .venv/bin/activate
 bash scripts/install_ablation_env.sh
 ```
 
-The local machine does not need a GPU. The installer checks Python, Docling import/version, PyTorch CUDA availability if PyTorch is installed, and `nvidia-smi` if present.
+If `python` is not available, use `python3` for the venv command. The installer checks Python, imports, Docling version, Tesseract, `nvidia-smi`, and Torch CUDA when available.
 
-Tesseract OCR profiles also need system packages. On Ubuntu:
+Tesseract OCR profiles need system packages. On Ubuntu:
 
 ```bash
 sudo apt-get update
 sudo apt-get install -y tesseract-ocr tesseract-ocr-eng tesseract-ocr-spa
 ```
 
-EasyOCR downloads model weights on first use. GPU/VLM profiles may require extra model downloads depending on the installed Docling version and runtime.
+## Common Runs
 
-## Copy To Remote GPU Server
+List all configured profiles:
 
-Copy the full project directory, including `configs/`, `scripts/`, `requirements.txt`, and your PDFs:
+```bash
+python scripts/run_docling_ablation.py --list-profiles
+```
+
+CPU-safe strong profiles:
+
+```bash
+python scripts/run_docling_ablation.py \
+  --input data \
+  --profile-groups native_text,ocr,backend \
+  --quality-tiers strong,heavy \
+  --output outputs/docling_ablation
+```
+
+Heavy GPU run:
+
+```bash
+python scripts/run_docling_ablation.py \
+  --input data \
+  --quality-tiers heavy,extreme \
+  --resource-classes high,extreme \
+  --output outputs/docling_ablation \
+  --allow-gpu
+```
+
+VLM-only GPU run:
+
+```bash
+python scripts/run_docling_ablation.py \
+  --input data \
+  --profile-groups vlm \
+  --output outputs/docling_ablation \
+  --allow-gpu
+```
+
+Dry run:
+
+```bash
+python scripts/run_docling_ablation.py \
+  --input data \
+  --quality-tiers extreme \
+  --allow-gpu \
+  --dry-run-plan
+```
+
+The legacy command still works:
+
+```bash
+python scripts/run_docling_ablation.py \
+  --input data \
+  --profiles all \
+  --output outputs/docling_ablation \
+  --allow-gpu
+```
+
+## Profile Families
+
+- Native-text PDFs: `native_text` profiles compare accurate TableFormer extraction across `docling_parse`, `pypdfium2`, threaded parsing, image scale, and cell matching.
+- Scanned PDFs: forced OCR profiles use Tesseract, EasyOCR, or RapidOCR where supported.
+- Bad embedded text layers: forced full-page OCR profiles replace unreliable selectable text.
+- Difficult tables: heavy and extreme profiles increase image scale and combine OCR, backend, and CUDA settings.
+- Merged-column issues: `cell_matching` profiles disable cell matching to test whether Docling is over-merging columns.
+- Image-heavy PDFs: EasyOCR and high image-scale profiles are intended for visually complex documents.
+- VLM visual extraction: `vlm` profiles use Docling VLM presets such as Granite Docling, SmolDocling, or Qwen when supported by the installed Docling version.
+
+Unsupported RapidOCR or VLM APIs are skipped cleanly and recorded in `run_metadata.json`; one unsupported profile does not stop the batch.
+
+## Output Layout
+
+```text
+outputs/docling_ablation/
+  summary.csv
+  summary.xlsx
+  summary.md
+  table_quality_summary.csv
+  table_quality_summary.xlsx
+  table_quality_summary.md
+  best_candidates.csv
+  best_candidates.xlsx
+  best_candidates.md
+  <pdf_stem>/
+    <profile_name>/
+      output.md
+      output.json
+      profile_used.yaml
+      run_metadata.json
+      table_metrics.json
+      inspection.md
+      tables/
+        table_001.csv
+        table_001.html
+      images/
+      errors.log
+```
+
+`output.md` is convenient for quick reading, but Markdown is lossy. Use `output.json` as the source of truth for structure, table items, captions, page references, pictures, and layout details.
+
+`tables/*.csv` and `tables/*.html` are best-effort exports from Docling table APIs. If direct export is unavailable, the runner tries table-like document items and records `table_export_failed` without failing the conversion.
+
+`table_metrics.json` contains ranking signals such as table count, row/column totals, empty-cell ratio, single-column table count, very-small table count, Markdown table-line count, and JSON table item count. These are not ground-truth quality metrics.
+
+`inspection.md` is the fastest per-run review file. It lists the profile, runtime, status, table CSV paths, top table shapes, the first 20 Markdown lines, and any errors or skip reasons.
+
+`summary.*` gives one row per PDF/profile with status, runtime, device/GPU details, selected settings, and output paths.
+
+`table_quality_summary.*` focuses on table signals across profiles.
+
+`best_candidates.*` ranks successful runs heuristically. The ranking is only a triage aid; inspect JSON and CSV/HTML outputs manually before choosing a final extraction profile.
+
+## GPU Workflow
+
+Develop locally with CPU-safe filters and dry-runs, then copy the repository and PDFs to the GPU server:
 
 ```bash
 rsync -av --exclude .venv ./ user@gpu-server:/path/ConversionExperiments/
 ```
 
-Then on the remote server:
+On the server:
 
 ```bash
 cd /path/ConversionExperiments
 python -m venv .venv
 source .venv/bin/activate
 bash scripts/install_ablation_env.sh
+nvidia-smi
 ```
 
-Confirm `nvidia-smi` reports a GPU before running CUDA or VLM profiles.
-
-## Run CPU-Safe Profiles
-
-Put PDFs under `data/`, then run all profiles. GPU-required profiles are recorded as skipped unless `--allow-gpu` is passed.
-
-```bash
-python scripts/run_docling_ablation.py \
-  --input data \
-  --profiles all \
-  --output outputs/docling_ablation
-```
-
-Run selected CPU-safe profiles:
-
-```bash
-python scripts/run_docling_ablation.py \
-  --input data \
-  --profiles standard_fast_no_ocr,standard_accurate_no_ocr \
-  --output outputs/docling_ablation
-```
-
-## Run GPU Profiles
-
-GPU-required profiles never run accidentally. Pass `--allow-gpu` to enable them:
-
-```bash
-python scripts/run_docling_ablation.py \
-  --input data/FICHA_TECNICA_TALFLEX_BI_LIB_PROLONG.pdf \
-  --profiles standard_accurate_no_ocr,standard_accurate_cellmatch_false,vlm_granite_docling_cuda \
-  --output outputs/docling_ablation \
-  --allow-gpu
-```
-
-If a CUDA/VLM profile is selected and no GPU is found, the runner fails clearly. To record a skip instead:
-
-```bash
-python scripts/run_docling_ablation.py \
-  --input data \
-  --profiles vlm_granite_docling_cuda \
-  --output outputs/docling_ablation \
-  --allow-gpu \
-  --allow-missing-gpu
-```
-
-Use `--device-override cpu`, `--device-override auto`, or `--device-override cuda` when you need to force device selection for all selected profiles.
-
-## Output Layout
-
-Each PDF/profile produces:
-
-```text
-outputs/docling_ablation/
-└── <pdf_stem>/
-    └── <profile_name>/
-        ├── output.md
-        ├── output.json
-        ├── profile_used.yaml
-        ├── run_metadata.json
-        ├── tables/
-        │   ├── table_001.csv
-        │   ├── table_001.html
-        │   └── ...
-        ├── images/
-        │   └── ...
-        └── errors.log
-```
-
-After every run, the root output folder also contains:
-
-- `summary.csv`
-- `summary.xlsx`
-- `summary.md`
-
-The summary has one row per PDF/profile with status, runtime, device, GPU details, table count, output paths, and error or skip reason.
-
-## Profile Guide
-
-- `standard_fast_no_ocr`: fast baseline for native text PDFs.
-- `standard_accurate_no_ocr`: native text PDFs where table quality matters more than runtime.
-- `standard_accurate_cellmatch_false`: difficult tables or merged-column issues; compare against cell matching enabled.
-- `standard_tesseract_ocr_psm3`: scanned or mixed PDFs using Tesseract with general page segmentation.
-- `standard_tesseract_force_ocr_psm6`: bad embedded text layers where full-page OCR is needed.
-- `standard_easyocr_force_ocr`: image-heavy PDFs where EasyOCR may outperform Tesseract.
-- `standard_cuda_accurate`: standard pipeline with explicit CUDA acceleration.
-- `vlm_granite_docling_cuda`: VLM visual extraction with Granite Docling; practical only on GPU.
-
-Markdown is convenient for inspection but can be lossy. Treat `output.json` as the source of truth when comparing structure, tables, captions, pictures, and layout details.
-
-## Docling Compatibility Notes
-
-The runner uses the Docling Python API with `PdfPipelineOptions`, `DocumentConverter`, `PdfFormatOption`, and `InputFormat.PDF`. It maps YAML table options to `TableFormerMode.FAST` or `TableFormerMode.ACCURATE`, sets `table_structure_options.do_cell_matching`, and configures OCR, image generation, and accelerator options when those fields exist.
-
-Docling has changed some OCR and VLM class names across versions. The script tries the common Tesseract, EasyOCR, accelerator, and VLM option classes and raises a clear profile-level error if the installed Docling version cannot support a selected option. Table export is also defensive: it tries table/dataframe/html export methods and records failures in `errors.log` without stopping the whole batch.
+Then run CUDA/VLM profiles with `--allow-gpu`. If you want missing GPUs recorded as skips instead of failures, also pass `--allow-missing-gpu`.
 
 ## Useful Flags
 
+- `--profiles all` or `--profiles name1,name2`: select exact profiles.
+- `--profile-groups native_text,ocr,cell_matching,vlm,gpu_performance,heavy_quality`: filter by metadata group.
+- `--quality-tiers strong,heavy,extreme`: filter by quality tier.
+- `--resource-classes high,extreme`: filter by expected resource use.
+- `--list-profiles`: print profile metadata and exit.
+- `--dry-run-plan`: print PDF/profile run and skip decisions without importing Docling.
+- `--max-pages N`: use Docling page limiting when available; otherwise a warning is recorded.
+- `--device-override cpu|auto|cuda`: override profile device selection.
 - `--overwrite`: rerun profiles even when previous metadata exists.
-- `--max-pages N`: quick test on the first N pages when supported by the installed Docling converter.
-- `--allow-missing-gpu`: record CUDA/VLM profiles as skipped on CPU-only machines.
-- `--config`: point to a modified profile YAML.
 
-One failed profile does not stop the batch. The profile is marked failed, `errors.log` gets a traceback, and summary files are still generated.
+One failed profile does not stop the batch. Failed and skipped profiles still produce `run_metadata.json`, `errors.log`, and `inspection.md`, and root summary files are still generated.
