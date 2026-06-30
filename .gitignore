@@ -1,0 +1,22 @@
+# Environment
+.env
+venv/
+.venv/
+.claude/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Experiment artifacts
+tmp/
+logs/
+output/
+
+# Data (PDFs are user-provided)
+data/*.pdf
+
+# OS
+.DS_Store
+.env.example

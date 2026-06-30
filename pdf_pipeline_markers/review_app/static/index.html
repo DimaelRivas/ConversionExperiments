@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Human Review</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+  <link rel="stylesheet" href="/static/style.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/markdown/markdown.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-left">
+      <select id="file-select" aria-label="Review file">
+        <option>Loading...</option>
+      </select>
+    </div>
+
+    <div class="header-center">
+      <span id="marker-badge" class="badge-warning">Loading markers</span>
+      <span id="header-message" class="header-message" hidden></span>
+    </div>
+
+    <div class="header-actions">
+      <button id="help-btn" class="icon-btn" type="button" aria-label="Keyboard shortcuts" title="Keyboard shortcuts">?</button>
+      <button id="save-btn" type="button">💾 Save</button>
+      <div id="shortcut-tooltip" role="tooltip" hidden>
+        <div><kbd>Ctrl+S</kbd><span>Save</span></div>
+        <div><kbd>Alt+N</kbd><span>Next marker</span></div>
+        <div><kbd>Alt+P</kbd><span>Previous marker</span></div>
+        <div><kbd>Alt+R</kbd><span>Resolve active marker</span></div>
+        <div><kbd>Alt+1</kbd><span>Focus PDF panel</span></div>
+        <div><kbd>Alt+2</kbd><span>Focus editor</span></div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-container">
+    <section id="pdf-panel" tabindex="0" aria-label="PDF panel">
+      <div id="pdf-stage">
+        <div id="pdf-pages" aria-label="PDF pages"></div>
+        <div id="pdf-placeholder">Select a file</div>
+      </div>
+
+      <div id="pdf-controls">
+        <button id="btn-prev" type="button">◀ Prev</button>
+        <label for="page-input">Page</label>
+        <input id="page-input" type="number" min="1" value="1">
+        <span id="page-total">/ 0</span>
+        <button id="btn-next" type="button">Next ▶</button>
+        <span class="control-divider"></span>
+        <button id="btn-zoom-out" type="button" aria-label="Zoom out">−</button>
+        <span id="zoom-display">100%</span>
+        <button id="btn-zoom-in" type="button" aria-label="Zoom in">+</button>
+      </div>
+    </section>
+
+    <div id="divider" role="separator" aria-orientation="vertical"></div>
+
+    <section id="md-panel" aria-label="Markdown panel">
+      <textarea id="editor-textarea"></textarea>
+    </section>
+  </main>
+
+  <button id="resolve-btn" type="button">✓ Remove Warning</button>
+
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  </script>
+  <script src="/static/app.js"></script>
+</body>
+</html>
